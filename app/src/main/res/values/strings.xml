@@ -8,4 +8,6 @@
     <string name="about">About</string>
     <string name="date_label">Date</string>
     <string name="time">Time</string>
+    <string name="edit_date">edit date</string>
+    <string name="edit_time">edit time</string>
 </resources>

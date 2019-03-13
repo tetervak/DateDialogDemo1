@@ -41,7 +41,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/date_value"
         app:layout_constraintTop_toTopOf="@+id/date_value"
-        app:srcCompat="@drawable/ic_edit" />
+        app:srcCompat="@drawable/ic_edit"
+        android:contentDescription="@string/edit_date" />
 
     <TextView
         android:id="@+id/time_label"
@@ -75,7 +76,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/time_value"
         app:layout_constraintTop_toTopOf="@+id/time_value"
-        app:srcCompat="@drawable/ic_edit" />
+        app:srcCompat="@drawable/ic_edit"
+        android:contentDescription="@string/edit_time" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
