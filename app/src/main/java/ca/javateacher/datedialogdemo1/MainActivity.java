@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     mEditTimeButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        DialogFragment fragment = new TimePickerFragment();
+        DialogFragment fragment = TimePickerFragment.getInstance(mDate);
         fragment.show(getSupportFragmentManager(), TIME_PICKER_FRAGMENT);
       }
     });
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     mEditDateButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        DialogFragment fragment = new DatePickerFragment();
+        DialogFragment fragment = DatePickerFragment.getInstance(mDate);
         fragment.show(getSupportFragmentManager(), DATE_PICKER_FRAGMENT);
       }
     });
