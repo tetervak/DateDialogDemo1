@@ -3,7 +3,6 @@ package ca.javateacher.datedialogdemo1;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -11,12 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +26,7 @@ public class DatePickerFragment extends DialogFragment
   interface DateSetListener{
     void onDateSet(int year, int month, int dayOfMonth);
   }
-  DateSetListener mDateSetListener;
+  private DateSetListener mDateSetListener;
 
   public DatePickerFragment() {
     // Required empty public constructor
@@ -46,6 +40,7 @@ public class DatePickerFragment extends DialogFragment
     return fragment;
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Override
   @NonNull
   public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -78,7 +73,7 @@ public class DatePickerFragment extends DialogFragment
   }
 
   @Override
-  public void onAttach(Context context) {
+  public void onAttach(@NonNull Context context) {
     super.onAttach(context);
     if(context instanceof DateSetListener){
       mDateSetListener = (DateSetListener) context;

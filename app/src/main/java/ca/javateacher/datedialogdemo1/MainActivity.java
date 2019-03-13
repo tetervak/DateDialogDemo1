@@ -2,6 +2,7 @@ package ca.javateacher.datedialogdemo1;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -16,20 +17,16 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Date;
 
-import static ca.javateacher.datedialogdemo1.Constants.DATE_KEY;
 import static ca.javateacher.datedialogdemo1.Constants.DATE_PICKER_FRAGMENT;
 import static ca.javateacher.datedialogdemo1.Constants.TIME_PICKER_FRAGMENT;
 
 public class MainActivity extends AppCompatActivity
     implements TimePickerFragment.TimeSetListener, DatePickerFragment.DateSetListener{
 
-  Date mDate;
+  private Date mDate;
 
-  TextView mTimeView;
-  TextView mDateView;
-
-  ImageButton mEditTimeButton;
-  ImageButton mEditDateButton;
+  private TextView mTimeView;
+  private TextView mDateView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +46,8 @@ public class MainActivity extends AppCompatActivity
     mTimeView.setText(DateFormat.getTimeFormat(this).format(mDate));
     mDateView.setText(DateFormat.getLongDateFormat(this).format(mDate));
 
-    mEditTimeButton = findViewById(R.id.edit_time_button);
-    mEditTimeButton.setOnClickListener(new View.OnClickListener() {
+    ImageButton editTimeButton = findViewById(R.id.edit_time_button);
+    editTimeButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         DialogFragment fragment = TimePickerFragment.getInstance(mDate);
@@ -58,8 +55,8 @@ public class MainActivity extends AppCompatActivity
       }
     });
 
-    mEditDateButton = findViewById(R.id.edit_date_button);
-    mEditDateButton.setOnClickListener(new View.OnClickListener() {
+    ImageButton editDateButton = findViewById(R.id.edit_date_button);
+    editDateButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         DialogFragment fragment = DatePickerFragment.getInstance(mDate);
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  protected void onSaveInstanceState(Bundle outState) {
+  protected void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putSerializable(Constants.DATE_KEY, mDate);
   }

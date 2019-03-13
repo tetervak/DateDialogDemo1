@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -35,7 +34,7 @@
         android:id="@+id/edit_date_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/gap1"
         app:layout_constraintBottom_toBottomOf="@+id/date_value"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -46,7 +45,7 @@
 
     <TextView
         android:id="@+id/time_label"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="@dimen/gap3"
         android:text="@string/time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/time_value"
@@ -58,7 +57,7 @@
 
     <TextView
         android:id="@+id/time_value"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/gap0"
         app:layout_constraintBaseline_toBaselineOf="@+id/time_label"
         app:layout_constraintEnd_toStartOf="@+id/edit_time_button"
         app:layout_constraintHorizontal_bias="0.5"
