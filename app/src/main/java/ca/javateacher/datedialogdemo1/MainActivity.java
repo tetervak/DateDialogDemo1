@@ -8,7 +8,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import android.text.format.DateFormat;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
@@ -17,11 +16,12 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Date;
 
-import static ca.javateacher.datedialogdemo1.Constants.DATE_PICKER_FRAGMENT;
-import static ca.javateacher.datedialogdemo1.Constants.TIME_PICKER_FRAGMENT;
+import static ca.javateacher.datedialogdemo1.Constants.*;
 
 public class MainActivity extends AppCompatActivity
-    implements TimePickerFragment.TimeSetListener, DatePickerFragment.DateSetListener{
+    implements
+        TimeInputFragment.TimeInputListener,
+        DateInputFragment.DateInputListener {
 
   private Date mDate;
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     setSupportActionBar(toolbar);
 
     if(savedInstanceState != null){
-      mDate = (Date) savedInstanceState.getSerializable(Constants.DATE_KEY);
+      mDate = (Date) savedInstanceState.getSerializable(DATE_KEY);
     }else{
       mDate = new Date();
     }
@@ -45,24 +45,24 @@ public class MainActivity extends AppCompatActivity
     mDateView = findViewById(R.id.date_value);
     mTimeView.setText(DateFormat.getTimeFormat(this).format(mDate));
     mDateView.setText(DateFormat.getLongDateFormat(this).format(mDate));
+    mTimeView.setOnClickListener(v -> showTimeInput());
+    mDateView.setOnClickListener(v -> showDateInput());
 
     ImageButton editTimeButton = findViewById(R.id.edit_time_button);
-    editTimeButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        DialogFragment fragment = TimePickerFragment.getInstance(mDate);
-        fragment.show(getSupportFragmentManager(), TIME_PICKER_FRAGMENT);
-      }
-    });
+    editTimeButton.setOnClickListener(v -> showTimeInput());
 
     ImageButton editDateButton = findViewById(R.id.edit_date_button);
-    editDateButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        DialogFragment fragment = DatePickerFragment.getInstance(mDate);
-        fragment.show(getSupportFragmentManager(), DATE_PICKER_FRAGMENT);
-      }
-    });
+    editDateButton.setOnClickListener(v -> showDateInput());
+  }
+
+  private void showDateInput() {
+    DialogFragment fragment = DateInputFragment.getInstance(mDate);
+    fragment.show(getSupportFragmentManager(), DATE_INPUT_FRAGMENT_TAG);
+  }
+
+  private void showTimeInput() {
+    DialogFragment fragment = TimeInputFragment.getInstance(mDate);
+    fragment.show(getSupportFragmentManager(), TIME_INPUT_FRAGMENT_TAG);
   }
 
   @Override
@@ -81,16 +81,20 @@ public class MainActivity extends AppCompatActivity
 
     //noinspection SimplifiableIfStatement
     if (id == R.id.about) {
-      AboutFragment aboutFragment = AboutFragment.newInstance();
-      aboutFragment.show(getSupportFragmentManager(), Constants.ABOUT_FRAGMENT);
+      showAbout();
       return true;
     }
 
     return super.onOptionsItemSelected(item);
   }
 
+  private void showAbout() {
+    AboutFragment aboutFragment = AboutFragment.newInstance();
+    aboutFragment.show(getSupportFragmentManager(), ABOUT_FRAGMENT_TAG);
+  }
+
   @Override
-  public void onTimeSet(int hour, int minute) {
+  public void setTime(int hour, int minute) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(mDate);
     int year = calendar.get(Calendar.YEAR);
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onDateSet(int year, int month, int day) {
+  public void setDate(int year, int month, int day) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(mDate);
     int hour = calendar.get(Calendar.HOUR_OF_DAY);

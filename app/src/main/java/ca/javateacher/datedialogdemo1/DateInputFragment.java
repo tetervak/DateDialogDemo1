@@ -1,8 +1,8 @@
 package ca.javateacher.datedialogdemo1;
 
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import android.text.format.DateFormat;
-import android.widget.TimePicker;
+import android.widget.DatePicker;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -21,26 +20,26 @@ import static ca.javateacher.datedialogdemo1.Constants.DATE_KEY;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimePickerFragment extends DialogFragment
-    implements TimePickerDialog.OnTimeSetListener{
+public class DateInputFragment extends DialogFragment{
 
-  interface TimeSetListener{
-    void onTimeSet(int hourOfDay, int minute);
+  interface DateInputListener {
+    void setDate(int year, int month, int dayOfMonth);
   }
-  private TimeSetListener mTimeSetListener;
+  private DateInputListener mDateInputListener;
 
-  public TimePickerFragment() {
+  public DateInputFragment() {
     // Required empty public constructor
   }
 
-  public static TimePickerFragment getInstance(Date date){
-    TimePickerFragment fragment = new TimePickerFragment();
+  public static DateInputFragment getInstance(Date date){
+    DateInputFragment fragment = new DateInputFragment();
     Bundle arguments = new Bundle();
     arguments.putSerializable(DATE_KEY, date);
     fragment.setArguments(arguments);
     return fragment;
   }
 
+  @SuppressWarnings("ConstantConditions")
   @Override
   @NonNull
   public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -56,33 +55,35 @@ public class TimePickerFragment extends DialogFragment
 
     final Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);
-    int hour = calendar.get(Calendar.HOUR_OF_DAY);
-    int minute = calendar.get(Calendar.MINUTE);
+
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH);
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
 
     // Create a new instance of TimePickerDialog and return it
-    return new TimePickerDialog(getActivity(), this, hour, minute,
-        DateFormat.is24HourFormat(getActivity()));
+    return new DatePickerDialog(getActivity(), this::setDate, year, month, day);
   }
 
-
-  @Override
-  public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-    if(mTimeSetListener != null){
-      mTimeSetListener.onTimeSet(hourOfDay, minute);
+  public void setDate(DatePicker view, int year, int month, int day) {
+    if(mDateInputListener != null){
+      mDateInputListener.setDate(year, month, day);
     }
   }
 
   @Override
   public void onAttach(@NonNull Context context) {
     super.onAttach(context);
-    if(context instanceof TimeSetListener){
-      mTimeSetListener = (TimeSetListener) context;
+    if(context instanceof DateInputListener){
+      mDateInputListener = (DateInputListener) context;
+    }else{
+      throw new RuntimeException(context.toString()
+              + " must implement DateInputFragment.DateInputListener");
     }
   }
 
   @Override
   public void onDetach() {
     super.onDetach();
-    mTimeSetListener = null;
+    mDateInputListener = null;
   }
 }
